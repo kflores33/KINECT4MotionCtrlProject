@@ -51,13 +51,15 @@ public class PlayerTrafficController : MonoBehaviour
         if (kb == null) return; // 没键盘设备就不处理
 
         // 左右方向键
-        if (kb.leftArrowKey.wasPressedThisFrame)
+        if (KinectInputSystem.GetButtonDown("Kinect_LeanRight"))
         {
             ChangeLane(-1);
+            Debug.Log("Lean Right Detected");
         }
-        else if (kb.rightArrowKey.wasPressedThisFrame)
+        else if (KinectInputSystem.GetButtonDown("Kinect_LeanLeft"))
         {
             ChangeLane(1);
+            Debug.Log("Lean Left Detected");
         }
     }
 
@@ -115,24 +117,28 @@ public class PlayerTrafficController : MonoBehaviour
         if (kb == null) return;
 
         // A = 左转
-        if (kb.aKey.wasPressedThisFrame)
+        if (KinectInputSystem.GetButtonDown("Kinect_SwipeLeft"))
         {
             SendCommandToCurrentLane(CarCommandType.Right);
+            Debug.Log("left hand swipe Detected");
         }
         // W = 直行
-        else if (kb.wKey.wasPressedThisFrame)
+        else if (KinectInputSystem.GetButtonDown("Kinect_LefHandForward"))
         {
             SendCommandToCurrentLane(CarCommandType.Straight);
+            Debug.Log("left hand forwARD Detected");
         }
         // D = 右转
-        else if (kb.dKey.wasPressedThisFrame)
+        else if (KinectInputSystem.GetButtonDown("Kinect_SwipeRight"))
         {
             SendCommandToCurrentLane(CarCommandType.Left);
+            Debug.Log("Right hand swipe Detected");
         }
         // S = 停止
-        else if (kb.sKey.wasPressedThisFrame)
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandForward"))
         {
             SendCommandToCurrentLane(CarCommandType.Stop);
+            Debug.Log("Right hand forward Detected");
         }
     }
 
