@@ -40,7 +40,7 @@ public class HorizontalTrafficCar : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;        // 一般横向路人车不需要受重力
+        rb.useGravity = true;        // 一般横向路人车不需要受重力
         rb.constraints = RigidbodyConstraints.FreezeRotation; // 防止碰撞乱转
     }
 
