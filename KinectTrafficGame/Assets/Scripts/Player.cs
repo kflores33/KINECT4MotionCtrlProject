@@ -117,10 +117,10 @@ public class PlayerTrafficController : MonoBehaviour
         if (kb == null) return;
 
         // A = ×ó×ª
-        if (KinectInputSystem.GetButtonDown("Kinect_SwipeLeft"))
+        if (KinectInputSystem.GetButtonDown("Kinect_LeftHandHorizontal"))
         {
             SendCommandToCurrentLane(CarCommandType.Right);
-            Debug.Log("left hand swipe Detected");
+            Debug.Log("left hand raised to side, signal car to turn right");
         }
         // W = Ö±ÐÐ
         else if (KinectInputSystem.GetButtonDown("Kinect_LefHandForward"))
