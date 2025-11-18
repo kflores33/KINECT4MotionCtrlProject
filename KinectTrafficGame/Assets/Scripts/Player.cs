@@ -117,28 +117,28 @@ public class PlayerTrafficController : MonoBehaviour
         if (kb == null) return;
 
         // A = 左转
-        if (KinectInputSystem.GetButtonDown("Kinect_LeftHandHorizontal"))
+        if (KinectInputSystem.GetButtonDown("Kinect_LeftHandHorizontal") || kb.aKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Right);
             Debug.Log("left hand raised to side, signal car to turn right");
         }
         // W = 直行
-        else if (KinectInputSystem.GetButtonDown("Kinect_LeftHandRaised"))
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandRaised") || kb.wKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Straight);
-            Debug.Log("left hand is up; let cars go straight");
+            Debug.Log("right hand is up; let cars go straight");
         }
         // D = 右转
-        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandHorizontal"))
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandHorizontal") || kb.dKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Left);
             Debug.Log("Right hand raised to side, signal car to turn left");
         }
         // S = 停止
-        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandRaised"))
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandForward") || kb.sKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Stop);
-            Debug.Log("Right hand is up; stop cars");
+            Debug.Log("Right hand is forward; stop cars");
         }
     }
 
