@@ -1,26 +1,33 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 public class PlayerRespawner : MonoBehaviour
 {
     [Header("Player Respawn Settings")]
-    [Tooltip("Íæ¼ÒµÄÔ¤ÖÆÌå£¨°üº¬ PlayerTrafficController¡¢Åö×²Ìå¡¢¸ÕÌåµÈ£©")]
+    [Tooltip("ç©å®¶çš„é¢„åˆ¶ä½“ï¼ˆåŒ…å« PlayerTrafficControllerã€ç¢°æ’ä½“ã€åˆšä½“ç­‰ï¼‰")]
     public GameObject playerPrefab;
 
-    [Tooltip("Íæ¼Ò³öÉúµÄÎ»ÖÃºÍ³¯Ïò")]
+    [Tooltip("ç©å®¶å‡ºç”Ÿçš„ä½ç½®å’Œæœå‘")]
     public Transform spawnPoint;
 
-    [Tooltip("Íæ¼Ò±»´İ»Ùºó¶àÉÙÃëÖØÉú")]
+    [Tooltip("ç©å®¶è¢«æ‘§æ¯åå¤šå°‘ç§’é‡ç”Ÿ")]
     public float respawnDelay = 2f;
 
     [Header("Lane Setup")]
-    [Tooltip("³¡¾°ÀïµÄËÄ¸ö³µµÀ waypoint£¨L1, L2, R2, R1£©£¬ÔÚÕâÀïÌî")]
+    [Tooltip("åœºæ™¯é‡Œçš„å››ä¸ªè½¦é“ waypointï¼ˆL1, L2, R2, R1ï¼‰ï¼Œåœ¨è¿™é‡Œå¡«")]
     public Transform[] lanePositions;
 
-    [Tooltip("³¡¾°Àï¶ÔÓ¦µÄËÄ¸öĞ¡ÈË SpriteRenderer£¬ÔÚÕâÀïÌî")]
+    [Tooltip("åœºæ™¯é‡Œå¯¹åº”çš„å››ä¸ªå°äºº SpriteRendererï¼Œåœ¨è¿™é‡Œå¡«")]
     public SpriteRenderer[] officerRenderers;
 
-    // µ±Ç°³¡¾°ÖĞ»î×ÅµÄÍæ¼ÒÒıÓÃ
+    [Header("Audio")]
+    [Tooltip("æ’­æ”¾éŸ³æ•ˆçš„ AudioSourceï¼ˆæŒ‚åœ¨è¿™ä¸ªç®¡ç†ç‰©ä½“ä¸Šï¼‰")]
+    public AudioSource audioSource;
+
+    [Tooltip("ç©å®¶è¢«é”€æ¯æ—¶æ’­æ”¾çš„éŸ³æ•ˆ")]
+    public AudioClip playerDestroyedClip;
+
+    // å½“å‰åœºæ™¯ä¸­æ´»ç€çš„ç©å®¶å¼•ç”¨
     private GameObject currentPlayer;
     private bool isRespawning = false;
 
@@ -31,7 +38,7 @@ public class PlayerRespawner : MonoBehaviour
 
     private void Update()
     {
-        // Èç¹ûµ±Ç°Íæ¼ÒÒÑ¾­±» Destroy ÇÒ»¹Ã»¿ªÊ¼ÖØÉú¼ÆÊ±£¬¾ÍÆô¶¯ÖØÉúĞ­³Ì
+        // å¦‚æœå½“å‰ç©å®¶å·²ç»è¢« Destroy ä¸”è¿˜æ²¡å¼€å§‹é‡ç”Ÿè®¡æ—¶ï¼Œå°±å¯åŠ¨é‡ç”Ÿåç¨‹
         if (!isRespawning && currentPlayer == null)
         {
             StartCoroutine(RespawnRoutine());
@@ -42,7 +49,14 @@ public class PlayerRespawner : MonoBehaviour
     {
         isRespawning = true;
 
-        // µÈ´ıÉè¶¨µÄÊ±¼ä£¨±ÈÈç 2 Ãë£©
+        // âœ… è¿™é‡Œä»£è¡¨ã€Œåˆšæ£€æµ‹åˆ°ç©å®¶å·²ç»è¢«é”€æ¯ã€
+        // æ’­æ”¾ç©å®¶æ­»äº¡éŸ³æ•ˆï¼ˆä»ç®¡ç†å™¨è‡ªå·±çš„ AudioSource æ’­ï¼‰
+        if (audioSource != null && playerDestroyedClip != null)
+        {
+            audioSource.PlayOneShot(playerDestroyedClip);
+        }
+
+        // ç­‰å¾…è®¾å®šçš„æ—¶é—´ï¼ˆæ¯”å¦‚ 2 ç§’ï¼‰
         yield return new WaitForSeconds(respawnDelay);
 
         SpawnPlayer();
@@ -54,11 +68,11 @@ public class PlayerRespawner : MonoBehaviour
     {
         if (playerPrefab == null || spawnPoint == null)
         {
-            Debug.LogError("PlayerRespawner: ÇëÔÚ Inspector ÀïÖ¸¶¨ playerPrefab ºÍ spawnPoint£¡");
+            Debug.LogError("PlayerRespawner: è¯·åœ¨ Inspector é‡ŒæŒ‡å®š playerPrefab å’Œ spawnPointï¼");
             return;
         }
 
-        // ÔÚ³öÉúµãÉú³ÉÍæ¼Ò£¬²¢ÔÚ Y Öá¶îÍâĞı×ª 90 ¶È
+        // åœ¨å‡ºç”Ÿç‚¹ç”Ÿæˆç©å®¶ï¼Œå¹¶åœ¨ Y è½´é¢å¤–æ—‹è½¬ 90 åº¦
         Quaternion spawnRot = spawnPoint.rotation * Quaternion.Euler(0f, 90f, 0f);
 
         currentPlayer = Instantiate(
@@ -67,10 +81,10 @@ public class PlayerRespawner : MonoBehaviour
             spawnRot
         );
 
-        // Íæ¼ÒÒ²²ÎÓë AICar ×²³µÏµÍ³µÄ»°£¬ÔÚÕâÀïÍ³Ò»Éè tag
+        // ç©å®¶ä¹Ÿå‚ä¸ AICar æ’è½¦ç³»ç»Ÿçš„è¯ï¼Œåœ¨è¿™é‡Œç»Ÿä¸€è®¾ tag
         currentPlayer.tag = "AICar";
 
-        // °Ñ³¡¾°ÀïµÄ waypoint / officerRenderer Ìî¸øÕâ¸öĞÂÍæ¼Ò
+        // æŠŠåœºæ™¯é‡Œçš„ waypoint / officerRenderer å¡«ç»™è¿™ä¸ªæ–°ç©å®¶
         PlayerTrafficController controller = currentPlayer.GetComponent<PlayerTrafficController>();
         if (controller != null)
         {
@@ -79,8 +93,7 @@ public class PlayerRespawner : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("PlayerRespawner: Éú³ÉµÄÍæ¼ÒÉÏÃ»ÓĞ PlayerTrafficController ×é¼ş¡£");
+            Debug.LogWarning("PlayerRespawner: ç”Ÿæˆçš„ç©å®¶ä¸Šæ²¡æœ‰ PlayerTrafficController ç»„ä»¶ã€‚");
         }
     }
-
 }
