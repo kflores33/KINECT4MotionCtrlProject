@@ -123,10 +123,10 @@ public class PlayerTrafficController : MonoBehaviour
             Debug.Log("left hand raised to side, signal car to turn right");
         }
         // W = Ö±ÐÐ
-        else if (KinectInputSystem.GetButtonDown("Kinect_LeftHandRaised") || kb.wKey.wasPressedThisFrame)
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandRaised") || kb.wKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Straight);
-            Debug.Log("left hand is up; let cars go straight");
+            Debug.Log("right hand is up; let cars go straight");
         }
         // D = ÓÒ×ª
         else if (KinectInputSystem.GetButtonDown("Kinect_RightHandHorizontal") || kb.dKey.wasPressedThisFrame)
@@ -135,10 +135,10 @@ public class PlayerTrafficController : MonoBehaviour
             Debug.Log("Right hand raised to side, signal car to turn left");
         }
         // S = Í£Ö¹
-        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandRaised") || kb.sKey.wasPressedThisFrame)
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandForward") || kb.sKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Stop);
-            Debug.Log("Right hand is up; stop cars");
+            Debug.Log("Right hand is forward; stop cars");
         }
     }
 
