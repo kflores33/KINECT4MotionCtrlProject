@@ -8,17 +8,13 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance { get; private set; }
 
     [Header("Score Settings")]
-    public int score = 0;
-    public int winScore = 30;    // >=30 胜利
-    public int loseScore = -10;  // <=-10 失败
+    public float timer = 30.0f;
+    public int loseScore = 0;  // <=-10 失败
 
     [Header("UI")]
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI messageText;
-
-    [Header("备用 Scene 设置（如果没有 TrafficManager 时使用）")]
-    public string winSceneName;
-    public string loseSceneName;
+    public GameObject EndGameObject;
+    public TextMeshProUGUI endGameText;
 
     private void Awake()
     {
@@ -36,7 +32,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateUI();
+        EndGameObject.SetActive(false);
     }
 
     /// <summary>
@@ -44,8 +40,7 @@ public class ScoreManager : MonoBehaviour
     /// </summary>
     public void OnCarGuidedSuccessfully(NpcCarController car)
     {
-        score++;
-        UpdateUI();
+        timer += 20;
         CheckEndGame();
     }
 
@@ -54,56 +49,39 @@ public class ScoreManager : MonoBehaviour
     /// </summary>
     public void OnCarCrash()
     {
-        score--;
-        UpdateUI();
+        timer -= 10;
         CheckEndGame();
     }
 
-    private void UpdateUI()
+    private void Update()
     {
-        if (scoreText != null)
-        {
-            scoreText.text = "Score: " + score;
-        }
+        timer -= Time.deltaTime;
+        UpdateTimer();
+        CheckEndGame();
     }
 
     private void CheckEndGame()
     {
-        if (score >= winScore)
+        if (timer <= loseScore)
         {
-            if (messageText != null)
-                messageText.text = "You Win!";
+            if (endGameText != null)
+            {
+                endGameText.text = "Game End!";
+                EndGameObject.SetActive(true);
+                Time.timeScale = 0;
+            }
 
-            HandleEnd(true);
         }
-        else if (score <= loseScore)
-        {
-            if (messageText != null)
-                messageText.text = "You Lose!";
-
-            HandleEnd(false);
-        }
+        else return;
     }
 
-    private void HandleEnd(bool win)
+    void UpdateTimer()
     {
-        // 优先让 TrafficManager 统一处理（停刷车 + 清车 + 切场景）
-        if (TrafficManager.Instance != null)
-        {
-            TrafficManager.Instance.EndGame(win);
-        }
-        else
-        {
-            // 万一你没挂 TrafficManager，就让 ScoreManager 自己切场景
-            string sceneToLoad = win ? winSceneName : loseSceneName;
-            if (!string.IsNullOrEmpty(sceneToLoad))
-            {
-                SceneManager.LoadScene(sceneToLoad);
-            }
-            else
-            {
-                Debug.Log("Game ended: " + (win ? "WIN" : "LOSE") + " (no TrafficManager / end scenes configured).");
-            }
-        }
+        float minutes = Mathf.FloorToInt(timer/60);
+        float seconds = Mathf.FloorToInt(timer % 60);
+
+        scoreText.text = string.Format("{0:00} : {1:00}", minutes, seconds);
     }
+
+
 }
