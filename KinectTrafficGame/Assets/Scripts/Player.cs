@@ -123,22 +123,22 @@ public class PlayerTrafficController : MonoBehaviour
             Debug.Log("left hand raised to side, signal car to turn right");
         }
         // W = Ö±ÐÐ
-        else if (KinectInputSystem.GetButtonDown("Kinect_LefHandForward"))
+        else if (KinectInputSystem.GetButtonDown("Kinect_LeftHandRaised"))
         {
             SendCommandToCurrentLane(CarCommandType.Straight);
-            Debug.Log("left hand forwARD Detected");
+            Debug.Log("left hand is up; let cars go straight");
         }
         // D = ÓÒ×ª
-        else if (KinectInputSystem.GetButtonDown("Kinect_SwipeRight"))
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandHorizontal"))
         {
             SendCommandToCurrentLane(CarCommandType.Left);
-            Debug.Log("Right hand swipe Detected");
+            Debug.Log("Right hand raised to side, signal car to turn left");
         }
         // S = Í£Ö¹
-        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandForward"))
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandRaised"))
         {
             SendCommandToCurrentLane(CarCommandType.Stop);
-            Debug.Log("Right hand forward Detected");
+            Debug.Log("Right hand is up; stop cars");
         }
     }
 
