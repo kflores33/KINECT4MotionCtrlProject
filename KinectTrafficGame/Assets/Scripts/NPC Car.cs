@@ -61,7 +61,13 @@ public class NpcCarController : MonoBehaviour
 
     [Header("Direction UI（头顶提示，告诉玩家这辆车“想去哪里”）")]
     public CarDesiredDirection desiredDirection = CarDesiredDirection.Straight;
-    public TextMeshPro directionLabel;   // 注意：这里用 TextMeshPro（3D 文本），不是 TextMeshProUGUI
+    public TextMeshPro directionLabel;   // 用 3D TextMeshPro，不是 TextMeshProUGUI
+
+    [Header("Audio")]
+    [Tooltip("播放音效的 AudioSource，不填的话会在 Awake 里自动 GetComponent")]
+    public AudioSource audioSource;
+    public AudioClip crashClip1;
+    public AudioClip crashClip2;
 
     [Header("Debug")]
     public bool drawDebugLines = false;
@@ -99,6 +105,11 @@ public class NpcCarController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
     }
 
     private void Start()
@@ -290,16 +301,13 @@ public class NpcCarController : MonoBehaviour
         }
     }
 
-    // ========== 碰撞逻辑：两辆 AICar 撞上 → 全停 → 一起销毁 ==========
+    // ========== 碰撞逻辑：两辆 AICar 撞上 → 全停 → 播放音效 → 闪两下 → 一起销毁 + 扣分 ==========
 
     private void OnCollisionEnter(Collision collision)
     {
+        // 只关心 AICar 和 AICar 之间的碰撞
         if (!collision.gameObject.CompareTag("AICar")) return;
-        if (isCrashed) return;
-
-        // 防止同一对车被处理两次：只让 instanceID 更小的那一辆负责
-        if (GetInstanceID() > collision.gameObject.GetInstanceID())
-            return;
+        if (isCrashed) return;   // 这辆车已经处理过撞车了
 
         isCrashed = true;
 
@@ -311,14 +319,17 @@ public class NpcCarController : MonoBehaviour
         // 停止对方（无论是 NpcCarController 还是 HorizontalTrafficCar）
         StopOtherCarCompletely(other);
 
-        // 扣一次分
+        // 播放两个撞击音效
+        PlayCrashSfx();
+
+        // 扣一次分（时间 -10）
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.OnCarCrash();
         }
 
-        // 一段时间后一起销毁
-        StartCoroutine(DestroyPairAfterDelay(other, 2f));
+        // 闪两下然后一起销毁
+        StartCoroutine(FlashAndDestroyPair(other, 0.2f, 4));
     }
 
     private void StopCarCompletely(NpcCarController car)
@@ -327,13 +338,12 @@ public class NpcCarController : MonoBehaviour
 
         car.isStopped = true;
         car.moveSpeed = 0f;
-        car.phase = car.phase; // 保持原状态，但不会再走逻辑
 
         if (car.rb != null)
         {
             car.rb.linearVelocity = Vector3.zero;
             car.rb.angularVelocity = Vector3.zero;
-            car.rb.isKinematic = true;            // 不再被物理推动
+            car.rb.isKinematic = true;               // 不再被物理推动
         }
     }
 
@@ -365,14 +375,53 @@ public class NpcCarController : MonoBehaviour
         }
     }
 
-    private IEnumerator DestroyPairAfterDelay(GameObject other, float delay)
+    // 播放两个撞击音效（叠在一起）
+    private void PlayCrashSfx()
     {
-        yield return new WaitForSeconds(delay);
+        if (audioSource == null) return;
+
+        if (crashClip1 != null)
+            audioSource.PlayOneShot(crashClip1);
+        if (crashClip2 != null)
+            audioSource.PlayOneShot(crashClip2);
+    }
+
+    // 闪烁两辆车，然后销毁
+    private IEnumerator FlashAndDestroyPair(GameObject other, float interval, int flashCount)
+    {
+        // 收集自己和对方所有 MeshRenderer
+        MeshRenderer[] myRenderers = GetComponentsInChildren<MeshRenderer>();
+        MeshRenderer[] otherRenderers = null;
+        if (other != null)
+        {
+            otherRenderers = other.GetComponentsInChildren<MeshRenderer>();
+        }
+
+        for (int i = 0; i < flashCount; i++)
+        {
+            SetRenderersEnabled(myRenderers, false);
+            SetRenderersEnabled(otherRenderers, false);
+            yield return new WaitForSeconds(interval);
+
+            SetRenderersEnabled(myRenderers, true);
+            SetRenderersEnabled(otherRenderers, true);
+            yield return new WaitForSeconds(interval);
+        }
 
         if (other != null)
             Destroy(other);
 
         Destroy(gameObject);
+    }
+
+    private void SetRenderersEnabled(MeshRenderer[] renderers, bool enabled)
+    {
+        if (renderers == null) return;
+        foreach (var r in renderers)
+        {
+            if (r != null)
+                r.enabled = enabled;
+        }
     }
 
     // ========== UI 显示 ==========
