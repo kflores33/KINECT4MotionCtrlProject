@@ -29,14 +29,16 @@ public class KinectInputSystem : MonoBehaviour
         "Kinect_Jump",
         "Kinect_RightHandRaised", // stop
         "Kinect_LeftHandRaised", // go
-        "Kinect_LeanLeft", // move left
-        "Kinect_LeanRight", // move right
+        "Kinect_LeanLeft",
+        "Kinect_LeanRight", 
         "Kinect_SwipeRight",
         "Kinect_SwipeLeft",
         "Kinect_RightHandForward",
         "Kinect_LeftHandForward",
         "Kinect_RightHandHorizontal", // turn right
-        "Kinect_LeftHandHorizontal" // turn left
+        "Kinect_LeftHandHorizontal", // turn left
+        "Kinect_LeftLegSideRaise", // move left
+        "Kinect_RightLegSideRaise" // move right
     };
     
     void Awake()
@@ -105,7 +107,10 @@ public class KinectInputSystem : MonoBehaviour
         var head = body.Joints[Kinect.JointType.Head];
         var spineBase = body.Joints[Kinect.JointType.SpineBase];
         var spineShoulder = body.Joints[Kinect.JointType.SpineShoulder];
-        
+        var rightFoot = body.Joints[Kinect.JointType.FootRight];
+        var leftFoot = body.Joints[Kinect.JointType.FootLeft];
+
+
         // Check for raised hands (button press)
         if (rightHand.Position.Y > head.Position.Y + handRaiseThreshold)
         {
@@ -152,6 +157,16 @@ public class KinectInputSystem : MonoBehaviour
         if (leftHand.Position.X < spineMid.Position.X - 0.3f) // make sure x position of hand is less than spine mid (because on left side)
         {
             SetButtonPressed("Kinect_LeftHandHorizontal");
+        }
+
+        // Check for leg side raises
+        if (rightFoot.Position.X > spineBase.Position.X + 0.2f)
+        {
+            SetButtonPressed("Kinect_RightLegSideRaise");
+        }
+        if (leftFoot.Position.X < spineBase.Position.X - 0.2f)
+        {
+            SetButtonPressed("Kinect_LeftLegSideRaise");
         }
 
         // Swipe detection
