@@ -484,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
   laneIndex: 1
-  moveSpeed: 8
+  moveSpeed: 6
   afterExitTravelDistance: 30
   visualYawOffset: 0
   visualRoot: {fileID: 0}

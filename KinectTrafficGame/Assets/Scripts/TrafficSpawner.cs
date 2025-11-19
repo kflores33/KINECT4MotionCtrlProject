@@ -18,6 +18,7 @@ public class TrafficSpawner : MonoBehaviour
     public float spawnIntervalMax = 4f;
 
     private float nextSpawnTime;
+    public float initialWaitTime = 30f;// wait to start spawning until _ seconds have passed
 
     private void Start()
     {
@@ -26,7 +27,7 @@ public class TrafficSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time >= nextSpawnTime)
+        if (Time.time >= nextSpawnTime && Time.time >= initialWaitTime)
         {
             SpawnHorizontalCar();
             ScheduleNextSpawn();

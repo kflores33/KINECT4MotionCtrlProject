@@ -75,8 +75,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HorizontalTrafficCar
   targetPoint: {fileID: 0}
-  minSpeed: 5
-  maxSpeed: 8
+  minSpeed: 4
+  maxSpeed: 6
   arriveDistance: 0.3
   visualYawOffset: 0
   visualRoot: {fileID: 0}
