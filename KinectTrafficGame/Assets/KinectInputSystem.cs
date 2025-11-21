@@ -173,11 +173,11 @@ public class KinectInputSystem : MonoBehaviour
         }
 
         // Check for horizontal hand positions
-        if (rightHand.Position.X > spineMid.Position.X + 0.3f) // make sure x position of hand is greater than spine mid (because on right side)
+        if (rightHand.Position.X > spineMid.Position.X + 0.4f) // make sure x position of hand is greater than spine mid (because on right side)
         {
             SetButtonPressed("Kinect_RightHandHorizontal");
         }
-        if (leftHand.Position.X < spineMid.Position.X - 0.3f) // make sure x position of hand is less than spine mid (because on left side)
+        if (leftHand.Position.X < spineMid.Position.X - 0.4f) // make sure x position of hand is less than spine mid (because on left side)
         {
             SetButtonPressed("Kinect_LeftHandHorizontal");
         }
