@@ -40,7 +40,8 @@ public class KinectInputSystem : MonoBehaviour
         "Kinect_LeftHandHorizontal", // turn left
         "Kinect_LeftLegSideRaise", // move left
         "Kinect_RightLegSideRaise", // move right
-        "Kinect_Bow" // start
+        "Kinect_Bow", // start
+        "Kinect_RightHandDown" // go (back in neutral position)
     };
     
     void Awake()
@@ -161,7 +162,11 @@ public class KinectInputSystem : MonoBehaviour
         {
             SetButtonPressed("Kinect_RightHandForward");
         }
-        
+        if (rightHand.Position.Y < spineMid.Position.Y + 0.2f)
+        {
+            SetButtonPressed("Kinect_RightHandDown");
+        }
+
         if (leftHand.Position.Z < spineShoulder.Position.Z - 0.3f)
         {
             SetButtonPressed("Kinect_LeftHandForward");

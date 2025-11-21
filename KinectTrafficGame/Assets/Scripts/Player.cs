@@ -108,6 +108,7 @@ public class PlayerTrafficController : MonoBehaviour
     //        发指令逻辑 (WASD)
     // =============================
 
+    bool carsAreStopped = false;
     private void HandleCommandInput()
     {
         if (NpcCarController.AllCars.Count == 0)
@@ -122,12 +123,6 @@ public class PlayerTrafficController : MonoBehaviour
             SendCommandToCurrentLane(CarCommandType.Right);
             //Debug.Log("left hand raised to side, signal car to turn right");
         }
-        // W = 直行
-        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandRaised") || kb.wKey.wasPressedThisFrame)
-        {
-            SendCommandToCurrentLane(CarCommandType.Straight);
-            //Debug.Log("right hand is up; let cars go straight");
-        }
         // D = 右转
         else if (KinectInputSystem.GetButtonDown("Kinect_RightHandHorizontal") || kb.dKey.wasPressedThisFrame)
         {
@@ -138,7 +133,15 @@ public class PlayerTrafficController : MonoBehaviour
         else if (KinectInputSystem.GetButtonDown("Kinect_RightHandForward") || kb.sKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Stop);
+            carsAreStopped = true;
             //Debug.Log("Right hand is forward; stop cars");
+        }        
+        // W = 直行
+        else if (KinectInputSystem.GetButtonDown("Kinect_RightHandDown") && carsAreStopped)
+        {
+            carsAreStopped = false;
+            SendCommandToCurrentLane(CarCommandType.Straight);
+            //Debug.Log("right hand is up; let cars go straight");
         }
     }
 
