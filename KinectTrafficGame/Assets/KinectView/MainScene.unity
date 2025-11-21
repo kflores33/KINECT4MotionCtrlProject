@@ -12266,7 +12266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5425312024667208385, guid: 3300183fc102f484397f1c751c06b626, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 478.5333
+      value: 304.0287
       objectReference: {fileID: 0}
     - target: {fileID: 5425312024667208385, guid: 3300183fc102f484397f1c751c06b626, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -12278,7 +12278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7432417604779035129, guid: 3300183fc102f484397f1c751c06b626, type: 3}
       propertyPath: m_text
-      value: Score (Total time in sec)
+      value: Score (sec)
       objectReference: {fileID: 0}
     - target: {fileID: 7766261373462158990, guid: 3300183fc102f484397f1c751c06b626, type: 3}
       propertyPath: m_Pivot.x
