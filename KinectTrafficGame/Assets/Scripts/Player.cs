@@ -126,7 +126,7 @@ public class PlayerTrafficController : MonoBehaviour
         else if (KinectInputSystem.GetButtonDown("Kinect_RightHandRaised") || kb.wKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Straight);
-            Debug.Log("right hand is up; let cars go straight");
+            //Debug.Log("right hand is up; let cars go straight");
         }
         // D = срв╙
         else if (KinectInputSystem.GetButtonDown("Kinect_RightHandHorizontal") || kb.dKey.wasPressedThisFrame)
@@ -138,7 +138,7 @@ public class PlayerTrafficController : MonoBehaviour
         else if (KinectInputSystem.GetButtonDown("Kinect_RightHandForward") || kb.sKey.wasPressedThisFrame)
         {
             SendCommandToCurrentLane(CarCommandType.Stop);
-            Debug.Log("Right hand is forward; stop cars");
+            //Debug.Log("Right hand is forward; stop cars");
         }
     }
 

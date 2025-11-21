@@ -1,13 +1,34 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using Windows.Kinect;
 
 public class BodySourceManager : MonoBehaviour 
 {
+    public BodySourceManager Instance { get; private set; }
+     void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private KinectSensor _Sensor;
     private BodyFrameReader _Reader;
     private Body[] _Data = null;
-    
+
+    public UnityEvent OnInitialize;
+    public void OnInitialized()
+    {
+        OnInitialize?.Invoke();
+    }
+
     public Body[] GetData()
     {
         return _Data;
@@ -25,6 +46,7 @@ public class BodySourceManager : MonoBehaviour
             if (!_Sensor.IsOpen)
             {
                 _Sensor.Open();
+                OnInitialized();
             }
         }   
     }

@@ -405,7 +405,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -442,8 +442,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3331004, y: 1.2682112, z: 3.4287338}
-  m_Center: {x: -0.00000005960466, y: 0.6341056, z: 0.00000011920932}
+  m_Size: {x: 0.66, y: 1.2682112, z: 3.4287338}
+  m_Center: {x: 0, y: 0.6341056, z: 0}
 --- !u!54 &6947902033382460476
 Rigidbody:
   m_ObjectHideFlags: 0
