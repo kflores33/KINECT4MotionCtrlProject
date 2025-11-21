@@ -3601,8 +3601,8 @@ MonoBehaviour:
   spawnRight: {fileID: 628069921}
   exitLeft: {fileID: 265043538}
   exitRight: {fileID: 265043538}
-  spawnIntervalMin: 7
-  spawnIntervalMax: 14
+  spawnIntervalMin: 12
+  spawnIntervalMax: 18
   initialWaitTime: 30
 --- !u!65 &628069923
 BoxCollider:
