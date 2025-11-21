@@ -16,10 +16,6 @@ public class ScoreManager : MonoBehaviour
     public GameObject EndGameObject;
     public TextMeshProUGUI endGameText;
 
-    public float absoluteScore;
-    private float playTime = 0f;
-    private bool gameEnded = false;
-
     private void Awake()
     {
         // ±ê×¼µ¥Àý
@@ -59,28 +55,20 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
-        if (!gameEnded)
-        {
-            playTime += Time.deltaTime;
-            absoluteScore = playTime;
-            timer -= Time.deltaTime;
-            UpdateTimer();
-            CheckEndGame();
-        }
+        timer -= Time.deltaTime;
+        UpdateTimer();
+        CheckEndGame();
     }
 
     private void CheckEndGame()
     {
-        if (timer <= loseScore && !gameEnded)
+        if (timer <= loseScore)
         {
-            gameEnded = true;
-            absoluteScore = playTime;
-            Time.timeScale = 0;
-
             if (endGameText != null)
             {
                 endGameText.text = "Game End!";
                 EndGameObject.SetActive(true);
+                Time.timeScale = 0;
             }
 
         }
