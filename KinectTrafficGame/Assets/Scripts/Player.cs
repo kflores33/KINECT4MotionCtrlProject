@@ -120,13 +120,13 @@ public class PlayerTrafficController : MonoBehaviour
         // A = ×ó×ª
         if (KinectInputSystem.GetButtonDown("Kinect_LeftHandHorizontal") || kb.aKey.wasPressedThisFrame)
         {
-            SendCommandToCurrentLane(CarCommandType.Right);
+            SendCommandToCurrentLane(CarCommandType.Left);
             //Debug.Log("left hand raised to side, signal car to turn right");
         }
         // D = ÓÒ×ª
         else if (KinectInputSystem.GetButtonDown("Kinect_RightHandHorizontal") || kb.dKey.wasPressedThisFrame)
         {
-            SendCommandToCurrentLane(CarCommandType.Left);
+            SendCommandToCurrentLane(CarCommandType.Right);
             //Debug.Log("Right hand raised to side, signal car to turn left");
         }
         // S = Í£Ö¹

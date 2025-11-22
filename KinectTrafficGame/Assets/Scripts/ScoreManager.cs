@@ -15,6 +15,7 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public GameObject EndGameObject;
     public TextMeshProUGUI endGameText;
+    public TextMeshProUGUI absoluteScoreText;
 
     public float absoluteScore;
     private float playTime = 0f;
@@ -43,7 +44,7 @@ public class ScoreManager : MonoBehaviour
     /// </summary>
     public void OnCarGuidedSuccessfully(NpcCarController car)
     {
-        timer += 20;
+        absoluteScore += 20;
         CheckEndGame();
     }
 
@@ -52,7 +53,7 @@ public class ScoreManager : MonoBehaviour
     /// </summary>
     public void OnCarCrash()
     {
-        timer -= 10;
+        absoluteScore -= 10;
         CheckEndGame();
     }
 
@@ -60,8 +61,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (!gameEnded)
         {
-            playTime += Time.deltaTime;
-            absoluteScore = playTime;
+            
             timer -= Time.deltaTime;
             UpdateTimer();
             CheckEndGame();
@@ -73,7 +73,6 @@ public class ScoreManager : MonoBehaviour
         if (timer <= loseScore && !gameEnded)
         {
             gameEnded = true;
-            absoluteScore = playTime;
             Time.timeScale = 0;
 
             if (endGameText != null)
@@ -91,6 +90,7 @@ public class ScoreManager : MonoBehaviour
         float minutes = Mathf.FloorToInt(timer/60);
         float seconds = Mathf.FloorToInt(timer % 60);
 
+        absoluteScoreText.text = $"Score: {absoluteScore}";
         scoreText.text = string.Format("{0:00} : {1:00}", minutes, seconds);
     }
 

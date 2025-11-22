@@ -290,8 +290,8 @@ public class NpcCarController : MonoBehaviour
 
             if (correct && ScoreManager.Instance != null)
             {
-                hasScored = true;
                 ScoreManager.Instance.OnCarGuidedSuccessfully(this);
+                hasScored = true;
             }
         }
 

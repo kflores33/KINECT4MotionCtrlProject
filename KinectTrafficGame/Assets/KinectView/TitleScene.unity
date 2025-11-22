@@ -1903,6 +1903,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TitleSceneManager
   SensorReady: 0
   waitTime: 3
+  green: {r: 0.24138014, g: 1, b: 0.16509432, a: 1}
+  Stop: {fileID: 578984188}
+  Go: {fileID: 518988697}
+  MoveLeft: {fileID: 770307742}
+  MoveRight: {fileID: 1679610819}
+  Right: {fileID: 635450139}
+  Left: {fileID: 1073967279}
 --- !u!4 &1638253722
 Transform:
   m_ObjectHideFlags: 0
